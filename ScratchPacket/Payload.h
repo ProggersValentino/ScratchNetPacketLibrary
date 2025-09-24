@@ -27,7 +27,7 @@ struct PLOAD_API Payload
 	Payload(): bitMask(0b00000000) {}
 
 	//when the data for the payload is fed through it gets convertted & compressed for to send over the network
-	Payload(std::vector<EVariablesToChange> variablesMasks, std::vector<char>& changedValues) 
+	Payload(std::vector<EVariablesToChange> variablesMasks, std::vector<char>& changedValues) : bitMask(0b00000000)
 	{
 		UpdateMasks(variablesMasks);
 

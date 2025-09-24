@@ -19,14 +19,14 @@ SNPSHT_API void CompareSnapShot(Snapshot source, Snapshot target, std::vector<EV
 	float positionYDiffernce = target.posY - source.posY;
 	float positionZDiffernce = target.posZ - source.posZ;
 
-	if (positionXDiffernce > 0.002) //how much tolerance are we willing to take on for imprecision
+	if (positionXDiffernce > 0.002 || positionXDiffernce < -0.002) //how much tolerance are we willing to take on for imprecision
 	{
 		changedVariables.push_back(EVariablesToChange::positionX);
 
 		SerializeFloat(positionXDiffernce, changes); //serialize the float into big endian and byte format
 	}
 
-	if (positionYDiffernce > 0.002) 
+	if (positionYDiffernce > 0.002 || positionYDiffernce < -0.002)
 	{
 		changedVariables.push_back(EVariablesToChange::positionY);
 
@@ -34,7 +34,7 @@ SNPSHT_API void CompareSnapShot(Snapshot source, Snapshot target, std::vector<EV
 	}
 
 
-	if (positionZDiffernce > 0.002) 
+	if (positionZDiffernce > 0.002 || positionZDiffernce < -0.002)
 	{
 		changedVariables.push_back(EVariablesToChange::positionZ);
 
