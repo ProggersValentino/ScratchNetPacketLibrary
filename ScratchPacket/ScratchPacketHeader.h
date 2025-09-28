@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <zlib.h>
 
 #define SPH_EXPORTS
 
@@ -11,10 +12,20 @@
 
 struct SPH_API ScratchPacketHeader
 {
-	uint16_t sequence;
-	uint16_t ack;
-	uint32_t ack_bits;
+	uint16_t sequence; //the Number this packet is e.g. #55
+	uint16_t ack; //the previous packet number acknowedleged from the last sender
+	uint32_t ack_bits; //the previous 32 packets recieved & acked from the last sender
 
+	//we use CRC to prevent packets from being accepted if they were tampered with or corrupted on the journey
 	uint32_t crc;
 
+	ScratchPacketHeader() : crc(0), sequence(0), ack(0), ack_bits(0){}
+
 };
+
+extern "C"
+{
+	SPH_API void GenerateCRC(ScratchPacketHeader& OUTHeader, void* buf, size_t size);
+
+	SPH_API ScratchPacketHeader* InitEmptyPacketHeader();
+}
