@@ -26,4 +26,15 @@ extern "C"
 	SERIAL_API void SerializeFloat(float value, std::vector<char>& outputBuffer);
 
 	SERIAL_API float DeserializeFloat(std::vector<char> payloadChanges, int startingPoint);
+
+	SERIAL_API void SerializeInt32(int value, std::vector<char>& outputBuf);
+	SERIAL_API int DeserializeInt32(std::vector<char> payload, int startingPoint);
+
+	SERIAL_API void SerializeUnsignedInt16(uint16_t value, std::vector<char>& outputBuf);
+	SERIAL_API uint16_t DeserializeUnsignedInt16(std::vector<char> payload, int startingPoint);
+
+	SERIAL_API void SerializeUnsignedInt32(uint32_t value, std::vector<char>& outputBuf);
+	SERIAL_API uint32_t DeserializeUnsignedInt32(std::vector<char> payload, int startingPoint);
+
+
 }

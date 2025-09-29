@@ -12,3 +12,9 @@ ScratchPacketHeader* InitEmptyPacketHeader()
 {
 	return new ScratchPacketHeader();
 }
+
+ScratchPacketHeader* InitPacketHeader(uint16_t providedSequence, uint16_t providedAck, uint32_t providedAckBits, uint32_t providedCRC)
+{
+	ScratchPacketHeader* generatedHeader = new ScratchPacketHeader(providedSequence, providedAck, providedAckBits, providedCRC);
+	return generatedHeader;
+}

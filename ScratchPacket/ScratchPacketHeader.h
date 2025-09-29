@@ -21,6 +21,15 @@ struct SPH_API ScratchPacketHeader
 
 	ScratchPacketHeader() : crc(0), sequence(0), ack(0), ack_bits(0){}
 
+	ScratchPacketHeader(uint16_t providedSequence, uint16_t providedAck, uint32_t providedAckBits, uint32_t providedCRC) : crc(0), sequence(0), ack(0), ack_bits(0)
+	{
+		sequence = providedSequence;
+		ack = providedAck;
+		ack_bits = providedAckBits;
+
+		crc = providedCRC;
+	}
+
 };
 
 extern "C"
@@ -28,4 +37,6 @@ extern "C"
 	SPH_API void GenerateCRC(ScratchPacketHeader& OUTHeader, void* buf, size_t size);
 
 	SPH_API ScratchPacketHeader* InitEmptyPacketHeader();
+
+	SPH_API ScratchPacketHeader* InitPacketHeader(uint16_t providedSequence, uint16_t providedAck, uint32_t providedAckBits, uint32_t providedCRC);
 }

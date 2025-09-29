@@ -1,5 +1,6 @@
 #pragma once
 #include "Snapshot.h"
+#include "ScratchPacketHeader.h"
 #include <iostream>
 #include <vector>
 #include <typeinfo>
@@ -20,6 +21,8 @@
 /// </summary>
 struct PLOAD_API Payload
 {
+	ScratchPacketHeader header;
+
 	uint8_t bitMask;
 
 	std::vector<char> setChanges;
@@ -27,7 +30,7 @@ struct PLOAD_API Payload
 	Payload(): bitMask(0b00000000) {}
 
 	//when the data for the payload is fed through it gets convertted & compressed for to send over the network
-	Payload(std::vector<EVariablesToChange> variablesMasks, std::vector<char>& changedValues) : bitMask(0b00000000)
+	Payload(std::vector<EVariablesToChange> variablesMasks, std::vector<char>& changedValues) : bitMask(0b00000000), header(ScratchPacketHeader())
 	{
 		UpdateMasks(variablesMasks);
 
@@ -41,6 +44,21 @@ struct PLOAD_API Payload
 		
 			
 		//memcpy(&setChanges, changedValues.data(), changedValues.size());
+	}
+
+	Payload(ScratchPacketHeader& headerToAssign, std::vector<EVariablesToChange> variablesMasks, std::vector<char>& changedValues) : bitMask(0b00000000), header(ScratchPacketHeader())
+	{
+		header = headerToAssign; //assigning the header for the 
+		
+		UpdateMasks(variablesMasks);
+
+		setChanges.resize(changedValues.size());
+
+		//copy value over 
+		for (int i = 0; i < setChanges.size(); i++)
+		{
+			setChanges[i] = changedValues[i];
+		}
 	}
 
 	void UpdateMasks(std::vector<EVariablesToChange>& masks) 
@@ -72,4 +90,5 @@ extern "C"
 {
 	PLOAD_API Payload* CreateEmptyPayload();
 	PLOAD_API Payload* CreatePayload(std::vector<EVariablesToChange> masks, std::vector<char> changedValues);
+	PLOAD_API Payload* CreatePayloadWithHeader(ScratchPacketHeader& headerToAssign, std::vector<EVariablesToChange> variablesMasks, std::vector<char>& changedValues);
 }
